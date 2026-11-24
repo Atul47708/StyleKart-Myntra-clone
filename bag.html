@@ -1,0 +1,70 @@
+
+<!-- bag.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shopping Bag | StyleKart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="index.html" class="logo">STYLE<span>KART</span></a>
+    </header>
+    <section class="extra-section">
+        <h2>MY SHOPPING BAG</h2>
+        <p>Your shopping bag is currently empty.</p>
+        <a href="index.html#products">Continue Shopping</a>
+    </section>
+    <h1>My Shopping Bag</h1>
+
+<div id="cart-items"></div>
+
+<h2 id="total-price">Total: ₹0</h2>
+
+<script>
+    function displayCart() {
+        const cart = JSON.parse(localStorage.getItem("stylekartCart")) || [];
+        const container = document.getElementById("cart-items");
+        let total = 0;
+
+        container.innerHTML = "";
+
+        if (cart.length === 0) {
+            container.innerHTML = "<h3>Your bag is empty!</h3>";
+        }
+
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+
+            container.innerHTML += `
+                <div>
+                    <img src="${item.image}" width="100" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p>Price: ₹${item.price}</p>
+                    <p>Quantity: ${item.quantity}</p>
+
+                    <button onclick="removeProduct(${index})">
+                        Remove
+                    </button>
+                </div>
+                <hr>
+            `;
+        });
+
+        document.getElementById("total-price").innerText =
+            "Total: ₹" + total;
+    }
+
+    function removeProduct(index) {
+        const cart = JSON.parse(localStorage.getItem("stylekartCart")) || [];
+
+        cart.splice(index, 1);
+
+        localStorage.setItem("stylekartCart", JSON.stringify(cart));
+        displayCart();
+    }
+
+    displayCart();
+</script>
+</body>
+</html>
